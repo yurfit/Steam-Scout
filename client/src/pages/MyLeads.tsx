@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Sidebar } from "@/components/layout/Sidebar";
+import { Sidebar, useSidebar } from "@/components/layout/Sidebar";
 import { useLeads, useDeleteLead } from "@/hooks/use-leads";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -20,6 +20,7 @@ import { motion } from "framer-motion";
 export default function MyLeads() {
   const { data: leads, isLoading } = useLeads();
   const [editingLead, setEditingLead] = useState<Lead | null>(null);
+  const { isCollapsed } = useSidebar();
 
   if (isLoading) {
     return (
@@ -32,7 +33,7 @@ export default function MyLeads() {
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar />
-      <main className="flex-1 ml-64 p-8 overflow-x-auto">
+      <main className={`flex-1 p-8 overflow-x-auto transition-all duration-300 ${isCollapsed ? 'ml-16' : 'ml-64'}`}>
         <header className="mb-8 flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-display font-bold mb-2">My Pipeline</h1>

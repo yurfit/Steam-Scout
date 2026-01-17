@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Sidebar } from "@/components/layout/Sidebar";
+import { Sidebar, useSidebar } from "@/components/layout/Sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -15,11 +15,12 @@ export default function Discover() {
   const [searchTerm, setSearchTerm] = useState("");
   const debouncedSearch = useDebounce(searchTerm, 500);
   const { data: results, isLoading } = useSteamSearch(debouncedSearch);
+  const { isCollapsed } = useSidebar();
 
   return (
     <div className="flex min-h-screen bg-background">
       <Sidebar />
-      <main className="flex-1 ml-64 p-8">
+      <main className={`flex-1 p-8 transition-all duration-300 ${isCollapsed ? 'ml-16' : 'ml-64'}`}>
         <header className="mb-8">
           <h1 className="text-3xl font-display font-bold mb-2">Discover Studios</h1>
           <p className="text-muted-foreground">Search the Steam database to find high-potential game studios.</p>
