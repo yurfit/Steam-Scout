@@ -22,9 +22,9 @@ export default function AuthPage() {
         >
           <div className="flex items-center gap-2 mb-8">
             <div className="h-8 w-8 bg-primary rounded-lg flex items-center justify-center">
-              <span className="font-bold text-white text-lg">B</span>
+              <span className="font-bold text-white text-lg">S</span>
             </div>
-            <span className="text-2xl font-bold font-display tracking-tight">bezi.ai</span>
+            <span className="text-2xl font-bold font-display tracking-tight">SteamLead</span>
           </div>
 
           <h1 className="text-5xl lg:text-7xl font-display font-bold leading-[1.1] mb-6">

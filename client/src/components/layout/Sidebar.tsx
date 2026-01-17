@@ -23,7 +23,7 @@ export function Sidebar() {
     <div className="flex h-screen w-64 flex-col border-r bg-card border-border/50 fixed left-0 top-0 z-40">
       <div className="p-6">
         <h1 className="text-2xl font-bold bg-gradient-to-r from-white to-white/60 bg-clip-text text-transparent">
-          bezi<span className="text-primary">.ai</span>
+          Steam<span className="text-primary">Lead</span>
         </h1>
         <p className="text-xs text-muted-foreground mt-1 tracking-widest uppercase">Growth Engine</p>
       </div>
