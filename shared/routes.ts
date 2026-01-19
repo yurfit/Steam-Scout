@@ -80,6 +80,32 @@ export const api = {
         200: z.custom<any>(), // SteamAppDetails
         404: errorSchemas.notFound,
       },
+    },
+    topGames: {
+      method: 'GET' as const,
+      path: '/api/steam/top',
+      responses: {
+        200: z.object({
+          games: z.array(z.object({
+            appid: z.number(),
+            name: z.string(),
+            headerImage: z.string().optional(),
+            developers: z.array(z.string()),
+            publishers: z.array(z.string()),
+            playerCount: z.number(),
+            reviewScore: z.number().optional(),
+            totalReviews: z.number().optional(),
+            releaseDate: z.string().optional(),
+            genres: z.array(z.string()).optional(),
+          })),
+          studios: z.array(z.object({
+            name: z.string(),
+            gamesCount: z.number(),
+            totalPlayers: z.number(),
+            topGame: z.string(),
+          })),
+        }),
+      },
     }
   }
 };

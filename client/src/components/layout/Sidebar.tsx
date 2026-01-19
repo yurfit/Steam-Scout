@@ -7,11 +7,13 @@ import {
   LogOut, 
   UserCircle,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  TrendingUp
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const NAV_ITEMS = [
+  { label: "Dashboard", href: "/", icon: TrendingUp },
   { label: "Discover", href: "/discover", icon: Search },
   { label: "My Leads", href: "/leads", icon: LayoutDashboard },
 ];

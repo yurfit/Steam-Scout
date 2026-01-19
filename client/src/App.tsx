@@ -8,6 +8,7 @@ import { Loader2 } from "lucide-react";
 import { SidebarProvider } from "@/components/layout/Sidebar";
 
 import AuthPage from "@/pages/AuthPage";
+import Dashboard from "@/pages/Dashboard";
 import Discover from "@/pages/Discover";
 import MyLeads from "@/pages/MyLeads";
 import NotFound from "@/pages/not-found";
@@ -44,20 +45,18 @@ function Router() {
   return (
     <Switch>
       <Route path="/auth">
-        {isAuthenticated ? <Redirect to="/discover" /> : <AuthPage />}
+        {isAuthenticated ? <Redirect to="/" /> : <AuthPage />}
       </Route>
       
-      {/* Protected Routes */}
+      {/* Protected Routes - specific paths first, then root */}
       <Route path="/discover">
         {() => <ProtectedRoute component={Discover} />}
       </Route>
       <Route path="/leads">
         {() => <ProtectedRoute component={MyLeads} />}
       </Route>
-      
-      {/* Redirect root to discover or auth */}
       <Route path="/">
-        {isAuthenticated ? <Redirect to="/discover" /> : <Redirect to="/auth" />}
+        {() => <ProtectedRoute component={Dashboard} />}
       </Route>
 
       <Route component={NotFound} />

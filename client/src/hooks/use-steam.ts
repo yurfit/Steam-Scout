@@ -31,3 +31,16 @@ export function useSteamAppDetails(appId: number | undefined) {
     staleTime: 1000 * 60 * 60, // Cache details for 1 hour
   });
 }
+
+export function useSteamTopGames() {
+  return useQuery({
+    queryKey: [api.steam.topGames.path],
+    queryFn: async () => {
+      const res = await fetch(api.steam.topGames.path, { credentials: "include" });
+      if (!res.ok) throw new Error("Failed to fetch top games");
+      return api.steam.topGames.responses[200].parse(await res.json());
+    },
+    staleTime: 1000 * 60 * 2, // Cache for 2 mins
+    refetchInterval: 1000 * 60 * 2, // Auto-refresh every 2 mins
+  });
+}
