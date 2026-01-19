@@ -27,10 +27,11 @@ export async function registerRoutes(
     res.json(lead);
   });
 
-  app.post(api.leads.create.path, isAuthenticated, async (req, res) => {
+  app.post(api.leads.create.path, isAuthenticated, async (req: any, res) => {
     try {
       const input = api.leads.create.input.parse(req.body);
-      const lead = await storage.createLead(input);
+      const userId = req.user.claims.sub;
+      const lead = await storage.createLead({ ...input, userId });
       res.status(201).json(lead);
     } catch (err) {
       if (err instanceof z.ZodError) {

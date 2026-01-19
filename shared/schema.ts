@@ -19,10 +19,12 @@ export const leads = pgTable("leads", {
   updatedAt: timestamp("updated_at").defaultNow(),
 });
 
-export const insertLeadSchema = createInsertSchema(leads).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertLeadSchema = createInsertSchema(leads).omit({ id: true, createdAt: true, updatedAt: true, userId: true });
+export const fullInsertLeadSchema = createInsertSchema(leads).omit({ id: true, createdAt: true, updatedAt: true });
 
 export type Lead = typeof leads.$inferSelect;
 export type InsertLead = z.infer<typeof insertLeadSchema>;
+export type FullInsertLead = z.infer<typeof fullInsertLeadSchema>;
 
 export type CreateLeadRequest = InsertLead;
 export type UpdateLeadRequest = Partial<InsertLead>;

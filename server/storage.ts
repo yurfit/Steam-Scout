@@ -2,7 +2,7 @@ import { db } from "./db";
 import {
   leads,
   type Lead,
-  type InsertLead,
+  type FullInsertLead,
   type UpdateLeadRequest
 } from "@shared/schema";
 import { eq, and } from "drizzle-orm";
@@ -11,7 +11,7 @@ import { IAuthStorage, authStorage } from "./replit_integrations/auth";
 export interface IStorage extends IAuthStorage {
   getLeads(userId: string): Promise<Lead[]>;
   getLead(id: number): Promise<Lead | undefined>;
-  createLead(lead: InsertLead): Promise<Lead>;
+  createLead(lead: FullInsertLead): Promise<Lead>;
   updateLead(id: number, updates: UpdateLeadRequest): Promise<Lead>;
   deleteLead(id: number): Promise<void>;
 }
@@ -30,7 +30,7 @@ export class DatabaseStorage implements IStorage {
     return lead;
   }
 
-  async createLead(lead: InsertLead): Promise<Lead> {
+  async createLead(lead: FullInsertLead): Promise<Lead> {
     const [created] = await db.insert(leads).values(lead).returning();
     return created;
   }
