@@ -1,6 +1,6 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { Webhook } from 'svix';
-import { getDb } from '../../server/db.vercel';
+import { db } from '../../server/db';
 import { users } from '@shared/schema';
 import { eq } from 'drizzle-orm';
 
@@ -41,8 +41,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       'svix-timestamp': svixTimestamp,
       'svix-signature': svixSignature,
     }) as any;
-
-    const db = getDb();
 
     switch (event.type) {
       case 'user.created':
