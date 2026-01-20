@@ -1,0 +1,339 @@
+/**
+ * Mobile-First Responsive Design Utilities
+ *
+ * This CSS file provides mobile-first responsive utilities and patterns
+ * following best practices for touch-friendly interfaces and optimal mobile performance.
+ */
+
+/* Touch-friendly minimum sizes */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Mobile-optimized scrolling */
+.scroll-smooth-mobile {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Prevent text size adjustment on orientation change */
+html {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Mobile-friendly tap highlight */
+* {
+  -webkit-tap-highlight-color: rgba(var(--primary), 0.1);
+}
+
+/* Safe area insets for notched devices (iPhone X+) */
+.safe-area-inset-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-area-inset-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-area-inset-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+.safe-area-inset-right {
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Responsive container with fluid padding */
+.container-responsive {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 640px) {
+  .container-responsive {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container-responsive {
+    max-width: 1280px;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+/* Mobile-first grid system */
+.grid-responsive {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .grid-responsive {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid-responsive {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+/* Responsive typography scale */
+.text-responsive-sm {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.text-responsive-base {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.text-responsive-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.text-responsive-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.text-responsive-2xl {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+@media (min-width: 640px) {
+  .text-responsive-lg {
+    font-size: 1.25rem;
+  }
+  .text-responsive-xl {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  .text-responsive-2xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .text-responsive-xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+  .text-responsive-2xl {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
+}
+
+/* Mobile navigation patterns */
+.mobile-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background: hsl(var(--background));
+  border-top: 1px solid hsl(var(--border));
+  padding: 0.75rem;
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+@media (min-width: 1024px) {
+  .mobile-nav {
+    display: none;
+  }
+}
+
+/* Responsive images with aspect ratio */
+.aspect-video-responsive {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  object-fit: cover;
+}
+
+.aspect-square-responsive {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  object-fit: cover;
+}
+
+/* Mobile-optimized forms */
+.form-input-mobile {
+  font-size: 16px; /* Prevents iOS zoom on focus */
+  min-height: 44px;
+}
+
+/* Responsive spacing utilities */
+.spacing-responsive-sm {
+  padding: 0.75rem;
+}
+
+.spacing-responsive-md {
+  padding: 1rem;
+}
+
+.spacing-responsive-lg {
+  padding: 1.5rem;
+}
+
+@media (min-width: 640px) {
+  .spacing-responsive-sm {
+    padding: 1rem;
+  }
+  .spacing-responsive-md {
+    padding: 1.5rem;
+  }
+  .spacing-responsive-lg {
+    padding: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .spacing-responsive-md {
+    padding: 2rem;
+  }
+  .spacing-responsive-lg {
+    padding: 3rem;
+  }
+}
+
+/* Sticky positioning with safe areas */
+.sticky-top {
+  position: sticky;
+  top: env(safe-area-inset-top);
+  z-index: 40;
+}
+
+/* Mobile menu transitions */
+.mobile-menu-enter {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.mobile-menu-enter-active {
+  transform: translateX(0);
+  opacity: 1;
+  transition: transform 300ms ease-out, opacity 300ms ease-out;
+}
+
+.mobile-menu-exit {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.mobile-menu-exit-active {
+  transform: translateX(-100%);
+  opacity: 0;
+  transition: transform 250ms ease-in, opacity 250ms ease-in;
+}
+
+/* Landscape mode optimizations for mobile */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hide-landscape-mobile {
+    display: none;
+  }
+
+  .compact-landscape {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  * {
+    outline-offset: 2px;
+  }
+
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 3px solid currentColor;
+  }
+}
+
+/* Dark mode optimizations for OLED screens */
+@media (prefers-color-scheme: dark) {
+  .oled-black {
+    background-color: #000000;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+}
+
+/* Focus visible for keyboard navigation */
+*:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+/* Smooth scrolling for browsers that support it */
+@supports (scroll-behavior: smooth) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Container queries support (progressive enhancement) */
+@supports (container-type: inline-size) {
+  .container-query {
+    container-type: inline-size;
+  }
+
+  @container (min-width: 400px) {
+    .container-responsive-content {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @container (min-width: 600px) {
+    .container-responsive-content {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+}

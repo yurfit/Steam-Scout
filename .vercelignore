@@ -1,0 +1,37 @@
+# Vercel Ignore File
+
+# Development files
+.replit
+replit.toml
+replit.md
+
+# Replit-specific integrations
+server/replit_integrations/
+
+# Backup files
+*.replit.*
+*.backup.*
+
+# Local environment
+.env.local
+.env*.local
+
+# Node modules
+node_modules/
+
+# Build outputs (will be rebuilt)
+dist/
+.vercel/
+
+# Development
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Optional local files
+.local/

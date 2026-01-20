@@ -3,23 +3,23 @@ import {
   leads,
   type Lead,
   type FullInsertLead,
-  type UpdateLeadRequest
+  type UpdateLeadRequest,
+  users,
+  type User,
+  type UpsertUser
 } from "@shared/schema";
-import { eq, and } from "drizzle-orm";
-import { IAuthStorage, authStorage } from "./replit_integrations/auth";
+import { eq } from "drizzle-orm";
 
-export interface IStorage extends IAuthStorage {
+export interface IStorage {
   getLeads(userId: string): Promise<Lead[]>;
   getLead(id: number): Promise<Lead | undefined>;
   createLead(lead: FullInsertLead): Promise<Lead>;
   updateLead(id: number, updates: UpdateLeadRequest): Promise<Lead>;
   deleteLead(id: number): Promise<void>;
+  upsertUser(user: UpsertUser): Promise<User>;
 }
 
 export class DatabaseStorage implements IStorage {
-  // Delegate auth methods to the auth storage implementation
-  getUser = authStorage.getUser.bind(authStorage);
-  upsertUser = authStorage.upsertUser.bind(authStorage);
 
   async getLeads(userId: string): Promise<Lead[]> {
     return await db.select().from(leads).where(eq(leads.userId, userId));
@@ -46,6 +46,27 @@ export class DatabaseStorage implements IStorage {
 
   async deleteLead(id: number): Promise<void> {
     await db.delete(leads).where(eq(leads.id, id));
+  }
+
+  async upsertUser(user: UpsertUser): Promise<User> {
+    const [upserted] = await db
+      .insert(users)
+      .values({
+        ...user,
+        updatedAt: new Date()
+      })
+      .onConflictDoUpdate({
+        target: users.id,
+        set: {
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          profileImageUrl: user.profileImageUrl,
+          updatedAt: new Date()
+        }
+      })
+      .returning();
+    return upserted;
   }
 }
 

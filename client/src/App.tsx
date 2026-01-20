@@ -6,12 +6,17 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { useAuth } from "@/hooks/use-auth";
 import { Loader2 } from "lucide-react";
 import { SidebarProvider } from "@/components/layout/Sidebar";
+import { ClerkProvider } from '@clerk/clerk-react';
+import { GDPRConsent } from '@/components/GDPRConsent';
+import '@/lib/i18n';
 
 import AuthPage from "@/pages/AuthPage";
 import Dashboard from "@/pages/Dashboard";
 import Discover from "@/pages/Discover";
 import MyLeads from "@/pages/MyLeads";
 import NotFound from "@/pages/not-found";
+
+const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || '';
 
 function ProtectedRoute({ component: Component, ...rest }: any) {
   const { isAuthenticated, isLoading } = useAuth();
@@ -66,14 +71,17 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <SidebarProvider>
-          <Toaster />
-          <Router />
-        </SidebarProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <ClerkProvider publishableKey={clerkPubKey}>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <SidebarProvider>
+            <Toaster />
+            <GDPRConsent />
+            <Router />
+          </SidebarProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </ClerkProvider>
   );
 }
 
