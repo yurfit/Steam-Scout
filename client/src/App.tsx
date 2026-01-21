@@ -8,6 +8,7 @@ import { Loader2 } from "lucide-react";
 import { SidebarProvider } from "@/components/layout/Sidebar";
 import { ClerkProvider } from '@clerk/clerk-react';
 import { GDPRConsent } from '@/components/GDPRConsent';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import '@/lib/i18n';
 
 import AuthPage from "@/pages/AuthPage";
@@ -71,17 +72,19 @@ function Router() {
 
 function App() {
   return (
-    <ClerkProvider publishableKey={clerkPubKey}>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <SidebarProvider>
-            <Toaster />
-            <GDPRConsent />
-            <Router />
-          </SidebarProvider>
-        </TooltipProvider>
-      </QueryClientProvider>
-    </ClerkProvider>
+    <ErrorBoundary>
+      <ClerkProvider publishableKey={clerkPubKey}>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <SidebarProvider>
+              <Toaster />
+              <GDPRConsent />
+              <Router />
+            </SidebarProvider>
+          </TooltipProvider>
+        </QueryClientProvider>
+      </ClerkProvider>
+    </ErrorBoundary>
   );
 }
 

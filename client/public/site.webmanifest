@@ -1,0 +1,83 @@
+{
+  "name": "Steam Scout - Game Discovery & Lead Management",
+  "short_name": "Steam Scout",
+  "description": "AI-powered game discovery and lead management for sales professionals",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#0A0A0B",
+  "background_color": "#0A0A0B",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-US",
+  "dir": "ltr",
+  "categories": ["business", "productivity", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View live game analytics",
+      "url": "/",
+      "icons": [
+        {
+          "src": "/icons/dashboard-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Discover Games",
+      "short_name": "Discover",
+      "description": "Search for Steam games",
+      "url": "/discover",
+      "icons": [
+        {
+          "src": "/icons/discover-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "My Leads",
+      "short_name": "Leads",
+      "description": "Manage your sales leads",
+      "url": "/leads",
+      "icons": [
+        {
+          "src": "/icons/leads-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/desktop-dashboard.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Dashboard view with real-time player counts"
+    },
+    {
+      "src": "/screenshots/mobile-discover.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Discover games on mobile"
+    }
+  ],
+  "prefer_related_applications": false
+}

@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { api } from "@shared/routes";
 import { z } from "zod";
 import { requireAuth } from "./middleware/clerk-auth";
+import { apiRateLimiter, readRateLimiter, writeRateLimiter, steamApiRateLimiter } from "./middleware/rate-limiter";
 import fetch from "node-fetch";
 import { createClerkClient } from '@clerk/backend';
 
@@ -16,8 +17,40 @@ export async function registerRoutes(
   app: Express
 ): Promise<Server> {
 
+  // Health Check Endpoint
+  app.get('/api/health', (req, res) => {
+    res.json({
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+      uptime: process.uptime(),
+      environment: process.env.NODE_ENV || 'development',
+      version: '1.0.0',
+    });
+  });
+
+  // Readiness Check (includes database connectivity)
+  app.get('/api/ready', async (req, res) => {
+    try {
+      // Quick database check
+      await storage.getLeads('health-check');
+
+      res.json({
+        status: 'ready',
+        timestamp: new Date().toISOString(),
+        database: 'connected',
+        clerk: !!process.env.CLERK_SECRET_KEY,
+      });
+    } catch (error) {
+      res.status(503).json({
+        status: 'unavailable',
+        timestamp: new Date().toISOString(),
+        error: 'Database connection failed',
+      });
+    }
+  });
+
   // Auth Routes - Get current user from Clerk
-  app.get('/api/auth/user', requireAuth, async (req, res) => {
+  app.get('/api/auth/user', requireAuth, apiRateLimiter, async (req, res) => {
     try {
       if (!req.auth?.userId) {
         return res.status(401).json({ message: 'Unauthorized' });
@@ -71,7 +104,7 @@ export async function registerRoutes(
   });
 
   // Leads Routes - Protected with Clerk
-  app.get(api.leads.list.path, requireAuth, async (req, res) => {
+  app.get(api.leads.list.path, requireAuth, readRateLimiter, async (req, res) => {
     try {
       const userId = req.auth!.userId;
       const leads = await storage.getLeads(userId);
@@ -82,7 +115,7 @@ export async function registerRoutes(
     }
   });
 
-  app.get(api.leads.get.path, requireAuth, async (req, res) => {
+  app.get(api.leads.get.path, requireAuth, readRateLimiter, async (req, res) => {
     try {
       const lead = await storage.getLead(Number(req.params.id));
       if (!lead) return res.status(404).json({ message: 'Lead not found' });
@@ -99,7 +132,7 @@ export async function registerRoutes(
     }
   });
 
-  app.post(api.leads.create.path, requireAuth, async (req, res) => {
+  app.post(api.leads.create.path, requireAuth, writeRateLimiter, async (req, res) => {
     try {
       const input = api.leads.create.input.parse(req.body);
       const userId = req.auth!.userId;
@@ -117,7 +150,7 @@ export async function registerRoutes(
     }
   });
 
-  app.put(api.leads.update.path, requireAuth, async (req, res) => {
+  app.put(api.leads.update.path, requireAuth, writeRateLimiter, async (req, res) => {
     try {
       const leadId = Number(req.params.id);
       const existingLead = await storage.getLead(leadId);
@@ -146,7 +179,7 @@ export async function registerRoutes(
     }
   });
 
-  app.delete(api.leads.delete.path, requireAuth, async (req, res) => {
+  app.delete(api.leads.delete.path, requireAuth, writeRateLimiter, async (req, res) => {
     try {
       const leadId = Number(req.params.id);
       const existingLead = await storage.getLead(leadId);
@@ -184,7 +217,7 @@ export async function registerRoutes(
     STEAM_CACHE.set(key, { data, timestamp: Date.now() });
   }
 
-  app.get(api.steam.search.path, requireAuth, async (req, res) => {
+  app.get(api.steam.search.path, requireAuth, steamApiRateLimiter, async (req, res) => {
     try {
       const term = req.query.term as string;
       if (!term) return res.status(400).json({ message: "Search term required" });
@@ -213,7 +246,7 @@ export async function registerRoutes(
     }
   });
 
-  app.get(api.steam.details.path, requireAuth, async (req, res) => {
+  app.get(api.steam.details.path, requireAuth, steamApiRateLimiter, async (req, res) => {
     try {
       const appId = req.params.id;
 
@@ -276,7 +309,7 @@ export async function registerRoutes(
     413150, 367520, 391540, 1086940, 105600, 945360
   ];
 
-  app.get(api.steam.topGames.path, requireAuth, async (req, res) => {
+  app.get(api.steam.topGames.path, requireAuth, steamApiRateLimiter, async (req, res) => {
     try {
       const cacheKey = 'top-games';
       const cached = getCached(cacheKey);
