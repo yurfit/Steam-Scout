@@ -1,6 +1,6 @@
 import { useState, useEffect, createContext, useContext } from "react";
 import { Link, useLocation } from "wouter";
-import { useAuth } from "@/hooks/use-auth";
+import { useClerkAuth } from "@/hooks/use-clerk-auth";
 import { 
   LayoutDashboard, 
   Search, 
@@ -54,7 +54,7 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
 
 export function Sidebar() {
   const [location] = useLocation();
-  const { user, logout } = useAuth();
+  const { user, logout } = useClerkAuth();
   const { isCollapsed, toggle } = useSidebar();
 
   return (

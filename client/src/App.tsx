@@ -3,7 +3,7 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { useAuth } from "@/hooks/use-auth";
+import { useClerkAuth } from "@/hooks/use-clerk-auth";
 import { Loader2 } from "lucide-react";
 import { SidebarProvider } from "@/components/layout/Sidebar";
 import { ClerkProvider } from '@clerk/clerk-react';
@@ -19,7 +19,7 @@ import NotFound from "@/pages/not-found";
 const clerkPubKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY || '';
 
 function ProtectedRoute({ component: Component, ...rest }: any) {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useClerkAuth();
 
   if (isLoading) {
     return (
@@ -37,7 +37,7 @@ function ProtectedRoute({ component: Component, ...rest }: any) {
 }
 
 function Router() {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isLoading } = useClerkAuth();
 
   if (isLoading) {
     return (
