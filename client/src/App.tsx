@@ -50,10 +50,13 @@ function Router() {
 
   return (
     <Switch>
+      <Route path="/auth/sign-up">
+        {isAuthenticated ? <Redirect to="/" /> : <AuthPage />}
+      </Route>
       <Route path="/auth">
         {isAuthenticated ? <Redirect to="/" /> : <AuthPage />}
       </Route>
-      
+
       {/* Protected Routes - specific paths first, then root */}
       <Route path="/discover">
         {() => <ProtectedRoute component={Discover} />}

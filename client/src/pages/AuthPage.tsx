@@ -1,20 +1,19 @@
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { ArrowRight, BarChart2, Gamepad2, Users } from "lucide-react";
+import { SignIn, SignUp } from "@clerk/clerk-react";
+import { BarChart2, Gamepad2, Users, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
+import { useLocation } from "wouter";
 
 export default function AuthPage() {
-  const handleLogin = () => {
-    window.location.href = "/api/login";
-  };
+  const [location] = useLocation();
+  const isSignUp = location.includes('sign-up');
 
   return (
     <div className="min-h-screen w-full bg-[#0A0A0B] flex flex-col lg:flex-row overflow-hidden">
       {/* Left Panel - Brand */}
       <div className="flex-1 relative flex flex-col justify-center px-8 lg:px-24 py-12 border-r border-white/5">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-[#0A0A0B] to-[#0A0A0B]" />
-        
-        <motion.div 
+
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -32,7 +31,7 @@ export default function AuthPage() {
           </h1>
 
           <p className="text-xl text-muted-foreground max-w-lg mb-12 leading-relaxed">
-            Identify high-potential AA and AAA studios. Track development pipelines. 
+            Identify high-potential AA and AAA studios. Track development pipelines.
             Automate your outreach workflow with data-driven insights.
           </p>
 
@@ -43,7 +42,7 @@ export default function AuthPage() {
               { icon: Users, text: "Studio Intelligence" },
               { icon: ArrowRight, text: "Lead Pipeline CRM" },
             ].map((item, i) => (
-              <motion.div 
+              <motion.div
                 key={i}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -58,27 +57,67 @@ export default function AuthPage() {
         </motion.div>
       </div>
 
-      {/* Right Panel - Login */}
-      <div className="lg:w-[480px] bg-card/50 backdrop-blur-sm flex items-center justify-center p-8">
-        <Card className="w-full max-w-md bg-black/40 border-white/10 p-8 shadow-2xl">
+      {/* Right Panel - Login with Clerk */}
+      <div className="lg:w-[520px] bg-card/50 backdrop-blur-sm flex items-center justify-center p-8">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="w-full max-w-md"
+        >
           <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold font-display mb-2">Welcome back</h2>
-            <p className="text-muted-foreground">Sign in to access your growth dashboard</p>
+            <h2 className="text-2xl font-bold font-display mb-2">
+              {isSignUp ? 'Get started' : 'Welcome back'}
+            </h2>
+            <p className="text-muted-foreground">
+              {isSignUp
+                ? 'Create an account to start discovering studios'
+                : 'Sign in to access your growth dashboard'}
+            </p>
           </div>
 
-          <Button 
-            onClick={handleLogin}
-            size="lg" 
-            className="w-full h-12 text-base bg-white text-black hover:bg-white/90 shadow-xl shadow-white/10"
-          >
-            Continue with Replit
-            <ArrowRight className="ml-2 w-4 h-4" />
-          </Button>
+          {isSignUp ? (
+            <SignUp
+              appearance={{
+                elements: {
+                  rootBox: 'w-full',
+                  card: 'shadow-2xl border-white/10 bg-black/40 backdrop-blur',
+                  headerTitle: 'sr-only',
+                  headerSubtitle: 'sr-only',
+                  socialButtonsBlockButton: 'bg-white text-black hover:bg-white/90',
+                  formButtonPrimary: 'bg-primary hover:bg-primary/90',
+                  footerActionLink: 'text-primary hover:text-primary/80',
+                },
+              }}
+              routing="path"
+              path="/auth/sign-up"
+              signInUrl="/auth"
+              redirectUrl="/"
+            />
+          ) : (
+            <SignIn
+              appearance={{
+                elements: {
+                  rootBox: 'w-full',
+                  card: 'shadow-2xl border-white/10 bg-black/40 backdrop-blur',
+                  headerTitle: 'sr-only',
+                  headerSubtitle: 'sr-only',
+                  socialButtonsBlockButton: 'bg-white text-black hover:bg-white/90',
+                  formButtonPrimary: 'bg-primary hover:bg-primary/90',
+                  footerActionLink: 'text-primary hover:text-primary/80',
+                },
+              }}
+              routing="path"
+              path="/auth"
+              signUpUrl="/auth/sign-up"
+              redirectUrl="/"
+            />
+          )}
 
           <p className="text-xs text-center text-muted-foreground mt-8">
             By continuing, you agree to our Terms of Service and Privacy Policy.
           </p>
-        </Card>
+        </motion.div>
       </div>
     </div>
   );
